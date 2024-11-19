@@ -1,0 +1,25 @@
+-----------Usage Example-----------
+python cve_commit_cli.py
+--cve_id CVE-2020-12762
+--commit_link https://github.com/json-c/json-c/commit/d07b91014986900a3a75f306d302e13e005e9d67
+--github_key YOURKEY
+--openai_key YOURKEY
+
+-----------Copy command-----------
+You can copy the following command and modify the github key and openai key:
+test1:
+python cve_commit_cli.py --cve_id CVE-2020-13401 --commit_link https://github.com/moby/libnetwork/commit/153d0769a1181bf591a9637fd487a541ec7db1e6 --github_key YOURKEY --openai_key YOURKEY
+test2:
+python cve_commit_cli.py --cve_id CVE-2020-12762 --commit_link https://github.com/json-c/json-c/commit/d07b91014986900a3a75f306d302e13e005e9d67 --github_key YOURKEY --openai_key YOURKEY
+
+-----------Expected output-----------
+You will get the following output:
+{
+  "Risky function": [
+    "linkhash.c/lh_table_insert_w_hash",
+    "printbuf.c/printbuf_extend",
+    "printbuf.c/printbuf_memappend",
+    "printbuf.c/printbuf_memset"
+  ],
+  "Explanation": "The identified risky functions are directly modified in the patch to address vulnerabilities related to integer overflow and out-of-bounds write, as described in CVE-2020-12762. \n\n1. `linkhash.c/lh_table_insert_w_hash`: This function was modified to prevent integer overflow when resizing the hash table. The original code could potentially double the size of the table without checking for overflow, leading to undefined behavior and possible out-of-bounds writes.\n\n2. `printbuf.c/printbuf_extend`: This function was modified to prevent integer overflow when calculating the new size of the buffer. The original code could result in an overflow when doubling the buffer size, which could lead to memory corruption.\n\n3. `printbuf.c/printbuf_memappend`: This function was modified to include checks that prevent integer overflow when appending data to the buffer. Without these checks, the function could write beyond the allocated memory, causing an out-of-bounds write.\n\n4. `printbuf.c/printbuf_memset`: This function was modified to prevent integer overflow when setting a range of memory in the buffer. The original code could result in an overflow when calculating the required buffer size, leading to potential memory corruption."
+}
